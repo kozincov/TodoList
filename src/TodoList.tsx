@@ -1,15 +1,19 @@
 import React from 'react';
-import {TaskType} from "./App";
+import {FilterValuesType, TaskType} from "./App";
 import {Button} from "./components/Button";
 
 export type TodoListType = {
     title: string,
     tasks: TaskType[],
     removeTask: (id: number) => void,
+    changeFilter: (value: FilterValuesType) => void,
 }
 
-export const TodoList = ({title, tasks, removeTask, ...props}: TodoListType) => {
+export const TodoList = ({title, tasks, removeTask,changeFilter, ...props}: TodoListType) => {
 
+    let onClickHandlerAll = () => {changeFilter("all")}
+    let onClickHandlerActive = () => {changeFilter("active")}
+    let onClickHandlerCompleted = () => {changeFilter("completed")}
 
     return (
         <div>
@@ -34,9 +38,9 @@ export const TodoList = ({title, tasks, removeTask, ...props}: TodoListType) => 
                 )}
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <Button callBack={onClickHandlerAll} title={'All'}/>
+                <Button callBack={onClickHandlerActive} title={'Active'}/>
+                <Button callBack={onClickHandlerCompleted} title={'Completed'}/>
             </div>
         </div>
     );
