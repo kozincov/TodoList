@@ -10,10 +10,14 @@ export const App = () => {
         {id: 3, title: 'React', isDone: true},
     ]);
 
+    let removeTask = (id:number) => {
+        let filteredTasks = task.filter(f=>f.id !== id)
+        setTasks(filteredTasks)
+    }
 
     return (
         <div className="App">
-            <TodoList title={"what to learn"} tasks={task}/>
+            <TodoList title={"what to learn"} tasks={task} removeTask={removeTask}/>
         </div>
     );
 }

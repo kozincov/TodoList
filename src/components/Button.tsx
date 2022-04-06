@@ -12,8 +12,6 @@ export const Button = ({callBack, title, ...props}: ButtonType) => {
     }
 
     return (
-        <div>
-            <button onClick={onClickHandler}>{title}</button>
-        </div>
+        <button onClick={onClickHandler}>{title}</button>
     );
 };

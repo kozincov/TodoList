@@ -5,23 +5,32 @@ import {Button} from "./components/Button";
 export type TodoListType = {
     title: string,
     tasks: TaskType[],
+    removeTask: (id: number) => void,
 }
 
-export const TodoList = ({title,tasks, ...props}: TodoListType) => {
+export const TodoList = ({title, tasks, removeTask, ...props}: TodoListType) => {
+
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
                 <input/>
-                <Button callBack={()=>{}} title={'+'}/>
+                <Button callBack={() => {}} title={'+'}/>
             </div>
             <ul>
-                {tasks.map(task=>
-                <li key={task.id}>
-                    <input type="checkbox" checked={task.isDone}/>
-                    <span>{task.title}</span>
-                    <Button callBack={()=>{}} title={'x'}/>
-                </li>
+                {tasks.map(task => {
+                        let onClickHandler = () => {
+                            removeTask(task.id)
+                        }
+                        return (
+                            <li key={task.id}>
+                                <input type="checkbox" checked={task.isDone}/>
+                                <span>{task.title}</span>
+                                <Button callBack={onClickHandler} title={'x'}/>
+                            </li>
+                        )
+                    }
                 )}
             </ul>
             <div>
