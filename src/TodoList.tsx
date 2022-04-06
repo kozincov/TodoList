@@ -1,26 +1,53 @@
-import React from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {Button} from "./components/Button";
 
 export type TodoListType = {
     title: string,
     tasks: TaskType[],
-    removeTask: (id: number) => void,
+    removeTask: (id: string) => void,
     changeFilter: (value: FilterValuesType) => void,
+    addTask: (title: string) => void,
 }
 
-export const TodoList = ({title, tasks, removeTask,changeFilter, ...props}: TodoListType) => {
+export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, ...props}: TodoListType) => {
 
-    let onClickHandlerAll = () => {changeFilter("all")}
-    let onClickHandlerActive = () => {changeFilter("active")}
-    let onClickHandlerCompleted = () => {changeFilter("completed")}
+    let [inputTitle, setInputTitle] = useState('')
+
+    let callBackHandler = () => {
+        addTask(inputTitle)
+        setInputTitle('')
+    }
+    let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setInputTitle(e.currentTarget.value)
+    }
+
+    let onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.charCode === 13) {
+            callBackHandler();
+        }
+    }
+
+    let onClickHandlerAll = () => {
+        changeFilter("all")
+    }
+    let onClickHandlerActive = () => {
+        changeFilter("active")
+    }
+    let onClickHandlerCompleted = () => {
+        changeFilter("completed")
+    }
 
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button callBack={() => {}} title={'+'}/>
+                <input
+                    value={inputTitle}
+                    onChange={onChangeHandler}
+                    onKeyPress={onKeyPressHandler}
+                />
+                <Button callBack={callBackHandler} title={'+'}/>
             </div>
             <ul>
                 {tasks.map(task => {
