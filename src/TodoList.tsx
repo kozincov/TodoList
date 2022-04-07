@@ -78,7 +78,7 @@ export const TodoList = ({
                             changeTaskStatus(task.id, newIsDoneValue)
                     };
                         return (
-                            <li key={task.id}>
+                            <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                 <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
                                 <span>{task.title}</span>
                                 <Button callBack={onClickHandler} title={'x'}/>
