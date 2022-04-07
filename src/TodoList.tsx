@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {Button} from "./components/Button";
+import {AddItemForm} from "./components/AddItemForm";
 
 export type TodoListType = {
     title: string,
@@ -27,27 +28,8 @@ export const TodoList = ({
                              ...props
                          }: TodoListType) => {
 
-    let [inputTitle, setInputTitle] = useState('')
-
-    let [error, setError] = useState<string | null>(null)
-
-    let callBackHandler = () => {
-        if (inputTitle.trim() !== '') {
-            addTask(todoListId, inputTitle)
-            setInputTitle('')
-        } else {
-            setError('Title is required')
-        }
-    }
-    let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputTitle(e.currentTarget.value)
-    }
-
-    let onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.charCode === 13) {
-            callBackHandler();
-        }
+    let callBackHandlerAddTask = (title: string) => {
+        addTask(todoListId, title)
     }
 
     let onClickHandlerAll = () => {
@@ -70,16 +52,7 @@ export const TodoList = ({
                 {title}
                 <Button callBack={onClickHandlerRemoveTodoList} title={'X'}/>
             </h3>
-            <div>
-                <input
-                    value={inputTitle}
-                    onChange={onChangeHandler}
-                    className={error ? 'error' : ''}
-                    onKeyPress={onKeyPressHandler}
-                />
-                <Button callBack={callBackHandler} title={'+'}/>
-                {error && <div className={'error-message'}>{error}</div>}
-            </div>
+            <AddItemForm addItem={callBackHandlerAddTask}/>
             <ul>
                 {tasks.map(task => {
                         let onClickHandler = () => {
