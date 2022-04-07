@@ -8,9 +8,10 @@ export type TodoListType = {
     removeTask: (id: string) => void,
     changeFilter: (value: FilterValuesType) => void,
     addTask: (title: string) => void,
+    changeTaskStatus:(id:string, isDone:boolean)=>void,
 }
 
-export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, ...props}: TodoListType) => {
+export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, changeTaskStatus, ...props}: TodoListType) => {
 
     let [inputTitle, setInputTitle] = useState('')
 
@@ -54,9 +55,13 @@ export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, ...pr
                         let onClickHandler = () => {
                             removeTask(task.id)
                         }
+                    let onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
+                            let newIsDoneValue = e.currentTarget.checked
+                            changeTaskStatus(task.id, newIsDoneValue)
+                    };
                         return (
                             <li key={task.id}>
-                                <input type="checkbox" checked={task.isDone}/>
+                                <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
                                 <span>{task.title}</span>
                                 <Button callBack={onClickHandler} title={'x'}/>
                             </li>
