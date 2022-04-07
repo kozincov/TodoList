@@ -13,7 +13,9 @@ export type TodoListType = {
     changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void,
     filter: string,
     todoListId: string,
-    removeTodoList: (todoListId: string) => void
+    removeTodoList: (todoListId: string) => void,
+    updateTodoList: (todoListId: string, title: string) => void,
+    updateTask: (todoListId: string, id: string, title: string) => void,
 }
 
 export const TodoList = ({
@@ -47,10 +49,19 @@ export const TodoList = ({
         removeTodoList(todoListId)
     }
 
+    let callBackForEditableSpan = (tId: string, title: string) => {
+        props.updateTask(todoListId, tId, title)
+    }
+
+    let callBackForEditableSpanTodo = (title: string) => {
+        props.updateTodoList(todoListId, title)
+    }
+
+
     return (
         <div>
             <h3>
-                {title}
+                <EditableSpan value={title} callBackForEditableSpan={callBackForEditableSpanTodo}/>
                 <Button callBack={onClickHandlerRemoveTodoList} title={'X'}/>
             </h3>
             <AddItemForm addItem={callBackHandlerAddTask}/>
@@ -66,7 +77,8 @@ export const TodoList = ({
                         return (
                             <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                 <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
-                                <EditableSpan value={task.title}/>
+                                <EditableSpan value={task.title}
+                                              callBackForEditableSpan={(title) => callBackForEditableSpan(task.id, title)}/>
                                 <Button callBack={onClickHandler} title={'x'}/>
                             </li>
                         )
