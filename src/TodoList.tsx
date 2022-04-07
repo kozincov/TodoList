@@ -9,9 +9,18 @@ export type TodoListType = {
     changeFilter: (value: FilterValuesType) => void,
     addTask: (title: string) => void,
     changeTaskStatus:(id:string, isDone:boolean)=>void,
+    filter: string,
 }
 
-export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, changeTaskStatus, ...props}: TodoListType) => {
+export const TodoList = ({
+                             title,
+                             tasks,
+                             removeTask,
+                             changeFilter,
+                             addTask,
+                             changeTaskStatus,
+                             filter,
+                             ...props}: TodoListType) => {
 
     let [inputTitle, setInputTitle] = useState('')
 
@@ -79,9 +88,9 @@ export const TodoList = ({title, tasks, removeTask, changeFilter, addTask, chang
                 )}
             </ul>
             <div>
-                <Button callBack={onClickHandlerAll} title={'All'}/>
-                <Button callBack={onClickHandlerActive} title={'Active'}/>
-                <Button callBack={onClickHandlerCompleted} title={'Completed'}/>
+                <Button className={filter === 'all' ? 'active-filter' : ''} callBack={onClickHandlerAll} title={'All'}/>
+                <Button className={filter === 'active' ? 'active-filter' : ''} callBack={onClickHandlerActive} title={'Active'}/>
+                <Button className={filter === 'completed' ? 'active-filter' : ''} callBack={onClickHandlerCompleted} title={'Completed'}/>
             </div>
         </div>
     );
