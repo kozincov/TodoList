@@ -8,9 +8,10 @@ export type TodoListType = {
     removeTask: (todoListId: string, id: string) => void,
     changeFilter: (todoListId: string, value: FilterValuesType) => void,
     addTask: (todoListId: string, title: string) => void,
-    changeTaskStatus:(todoListId: string, id:string, isDone:boolean)=>void,
+    changeTaskStatus: (todoListId: string, id: string, isDone: boolean) => void,
     filter: string,
-    todoListId:string,
+    todoListId: string,
+    removeTodoList: (todoListId: string) => void
 }
 
 export const TodoList = ({
@@ -22,7 +23,9 @@ export const TodoList = ({
                              changeTaskStatus,
                              filter,
                              todoListId,
-                             ...props}: TodoListType) => {
+                             removeTodoList,
+                             ...props
+                         }: TodoListType) => {
 
     let [inputTitle, setInputTitle] = useState('')
 
@@ -57,9 +60,16 @@ export const TodoList = ({
         changeFilter(todoListId, "completed")
     }
 
+    let onClickHandlerRemoveTodoList = () => {
+        removeTodoList(todoListId)
+    }
+
     return (
         <div>
-            <h3>{title}</h3>
+            <h3>
+                {title}
+                <Button callBack={onClickHandlerRemoveTodoList} title={'X'}/>
+            </h3>
             <div>
                 <input
                     value={inputTitle}
@@ -75,10 +85,10 @@ export const TodoList = ({
                         let onClickHandler = () => {
                             removeTask(todoListId, task.id)
                         }
-                    let onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
+                        let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             let newIsDoneValue = e.currentTarget.checked
                             changeTaskStatus(todoListId, task.id, newIsDoneValue)
-                    };
+                        };
                         return (
                             <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                 <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
@@ -91,8 +101,10 @@ export const TodoList = ({
             </ul>
             <div>
                 <Button className={filter === 'all' ? 'active-filter' : ''} callBack={onClickHandlerAll} title={'All'}/>
-                <Button className={filter === 'active' ? 'active-filter' : ''} callBack={onClickHandlerActive} title={'Active'}/>
-                <Button className={filter === 'completed' ? 'active-filter' : ''} callBack={onClickHandlerCompleted} title={'Completed'}/>
+                <Button className={filter === 'active' ? 'active-filter' : ''} callBack={onClickHandlerActive}
+                        title={'Active'}/>
+                <Button className={filter === 'completed' ? 'active-filter' : ''} callBack={onClickHandlerCompleted}
+                        title={'Completed'}/>
             </div>
         </div>
     );
