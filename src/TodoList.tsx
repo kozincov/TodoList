@@ -5,11 +5,12 @@ import {Button} from "./components/Button";
 export type TodoListType = {
     title: string,
     tasks: TaskType[],
-    removeTask: (id: string) => void,
-    changeFilter: (value: FilterValuesType) => void,
-    addTask: (title: string) => void,
-    changeTaskStatus:(id:string, isDone:boolean)=>void,
+    removeTask: (todoListId: string, id: string) => void,
+    changeFilter: (todoListId: string, value: FilterValuesType) => void,
+    addTask: (todoListId: string, title: string) => void,
+    changeTaskStatus:(todoListId: string, id:string, isDone:boolean)=>void,
     filter: string,
+    todoListId:string,
 }
 
 export const TodoList = ({
@@ -20,6 +21,7 @@ export const TodoList = ({
                              addTask,
                              changeTaskStatus,
                              filter,
+                             todoListId,
                              ...props}: TodoListType) => {
 
     let [inputTitle, setInputTitle] = useState('')
@@ -28,7 +30,7 @@ export const TodoList = ({
 
     let callBackHandler = () => {
         if (inputTitle.trim() !== '') {
-            addTask(inputTitle)
+            addTask(todoListId, inputTitle)
             setInputTitle('')
         } else {
             setError('Title is required')
@@ -46,13 +48,13 @@ export const TodoList = ({
     }
 
     let onClickHandlerAll = () => {
-        changeFilter("all")
+        changeFilter(todoListId, "all")
     }
     let onClickHandlerActive = () => {
-        changeFilter("active")
+        changeFilter(todoListId, "active")
     }
     let onClickHandlerCompleted = () => {
-        changeFilter("completed")
+        changeFilter(todoListId, "completed")
     }
 
     return (
@@ -71,11 +73,11 @@ export const TodoList = ({
             <ul>
                 {tasks.map(task => {
                         let onClickHandler = () => {
-                            removeTask(task.id)
+                            removeTask(todoListId, task.id)
                         }
                     let onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
                             let newIsDoneValue = e.currentTarget.checked
-                            changeTaskStatus(task.id, newIsDoneValue)
+                            changeTaskStatus(todoListId, task.id, newIsDoneValue)
                     };
                         return (
                             <li key={task.id} className={task.isDone ? 'is-done' : ''}>
