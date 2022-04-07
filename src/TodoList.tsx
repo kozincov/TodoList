@@ -2,6 +2,7 @@ import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import {Button} from "./components/Button";
 import {AddItemForm} from "./components/AddItemForm";
+import {EditableSpan} from "./components/EditableSpan";
 
 export type TodoListType = {
     title: string,
@@ -65,7 +66,7 @@ export const TodoList = ({
                         return (
                             <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                 <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
-                                <span>{task.title}</span>
+                                <EditableSpan value={task.title}/>
                                 <Button callBack={onClickHandler} title={'x'}/>
                             </li>
                         )
