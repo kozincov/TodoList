@@ -1,8 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TaskType} from "./App";
-import {Button} from "./components/Button";
 import {AddItemForm} from "./components/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from '@material-ui/icons';
 
 export type TodoListType = {
     title: string,
@@ -62,10 +63,12 @@ export const TodoList = ({
         <div>
             <h3>
                 <EditableSpan value={title} callBackForEditableSpan={callBackForEditableSpanTodo}/>
-                <Button callBack={onClickHandlerRemoveTodoList} title={'X'}/>
+                <IconButton onClick={onClickHandlerRemoveTodoList}>
+                    <Delete/>
+                </IconButton>
             </h3>
             <AddItemForm addItem={callBackHandlerAddTask}/>
-            <ul>
+            <div>
                 {tasks.map(task => {
                         let onClickHandler = () => {
                             removeTask(todoListId, task.id)
@@ -75,22 +78,28 @@ export const TodoList = ({
                             changeTaskStatus(todoListId, task.id, newIsDoneValue)
                         };
                         return (
-                            <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <input type="checkbox" onChange={onChangeHandler} checked={task.isDone}/>
+                            <div key={task.id} className={task.isDone ? 'is-done' : ''}>
+                                <Checkbox color='primary' onChange={onChangeHandler} checked={task.isDone}/>
                                 <EditableSpan value={task.title}
                                               callBackForEditableSpan={(title) => callBackForEditableSpan(task.id, title)}/>
-                                <Button callBack={onClickHandler} title={'x'}/>
-                            </li>
+                                <IconButton onClick={onClickHandler}>
+                                    <Delete/>
+                                </IconButton>
+                            </div>
                         )
                     }
                 )}
-            </ul>
+            </div>
             <div>
-                <Button className={filter === 'all' ? 'active-filter' : ''} callBack={onClickHandlerAll} title={'All'}/>
-                <Button className={filter === 'active' ? 'active-filter' : ''} callBack={onClickHandlerActive}
-                        title={'Active'}/>
-                <Button className={filter === 'completed' ? 'active-filter' : ''} callBack={onClickHandlerCompleted}
-                        title={'Completed'}/>
+                <Button variant={filter === 'all' ? 'outlined' : 'text'}
+                        onClick={onClickHandlerAll}
+                        color='inherit'>All</Button>
+                <Button variant={filter === 'active' ? 'outlined' : 'text'}
+                        onClick={onClickHandlerActive}
+                        color='primary'>Active</Button>
+                <Button variant={filter === 'completed' ? 'outlined' : 'text'}
+                        onClick={onClickHandlerCompleted}
+                        color='secondary'>Completed</Button>
             </div>
         </div>
     );
