@@ -33,38 +33,38 @@ export const App = () => {
         ]
     });
 
-    let updateTodoList = (todoListId: string, title: string) => {
+    const updateTodoList = (todoListId: string, title: string) => {
         setTodoLists(todoLists.map(m => m.id === todoListId ? {...m, title} : m))
     }
 
-    let updateTask = (todoListId: string, id: string, title: string) => {
+    const updateTask = (todoListId: string, id: string, title: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(m => m.id === id ? {...m, title} : m)})
     }
 
-    let removeTodoList = (todoListId: string) => {
+    const removeTodoList = (todoListId: string) => {
         setTodoLists(todoLists.filter(f => f.id !== todoListId))
         delete tasks[todoListId]
         setTasks({...tasks})
     }
 
-    let addTask = (todoListId: string, title: string) => {
+    const addTask = (todoListId: string, title: string) => {
         let newTask = {id: v1(), title, isDone: false}
         setTasks({...tasks, [todoListId]: [newTask, ...tasks[todoListId]]})
     }
 
-    let removeTask = (todoListId: string, id: string) => {
+    const removeTask = (todoListId: string, id: string) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].filter(f => f.id !== id)})
     }
 
-    let changeFilter = (todoListId: string, value: FilterValuesType) => {
+    const changeFilter = (todoListId: string, value: FilterValuesType) => {
         setTodoLists(todoLists.map(m => m.id === todoListId ? {...m, filter: value} : m))
     }
 
-    let changeTaskStatus = (todoListId: string, id: string, isDone: boolean) => {
+    const changeTaskStatus = (todoListId: string, id: string, isDone: boolean) => {
         setTasks({...tasks, [todoListId]: tasks[todoListId].map(m => m.id === id ? {...m, isDone} : m)})
     }
 
-    let addTodoList = (title: string) => {
+    const addTodoList = (title: string) => {
         let newTodoListId = v1();
         let newTodoList = {id: newTodoListId, title, filter: 'all'}
         setTodoLists([newTodoList, ...todoLists])

@@ -6,16 +6,16 @@ export const EditableSpan = ({value, callBackForEditableSpan, ...props}: Editabl
     let [title, setTitle] = useState(value)
     let [editMode, setEditMode] = useState(false)
 
-    let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
-    let onBlurHandler = () => {
+    const onBlurHandler = () => {
         setEditMode(false)
         callBackForEditableSpan(title)
     }
 
-    let onDoubleHandler = () => {
+    const onDoubleHandler = () => {
         setEditMode(true)
     }
 

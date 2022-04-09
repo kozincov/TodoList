@@ -7,7 +7,7 @@ export const AddItemForm = ({addItem, ...props}: AddItemFormType) => {
     let [inputTitle, setInputTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
 
-    let callBackHandler = () => {
+    const callBackHandler = () => {
         if (inputTitle.trim() !== '') {
             addItem(inputTitle)
             setInputTitle('')
@@ -16,11 +16,11 @@ export const AddItemForm = ({addItem, ...props}: AddItemFormType) => {
         }
     }
 
-    let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputTitle(e.currentTarget.value)
     }
 
-    let onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.charCode === 13) {
             callBackHandler();

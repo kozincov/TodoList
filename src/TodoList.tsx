@@ -32,29 +32,29 @@ export const TodoList = ({
                              ...props
                          }: TodoListType) => {
 
-    let callBackHandlerAddTask = (title: string) => {
+    const callBackHandlerAddTask = (title: string) => {
         addTask(todoListId, title)
     }
 
-    let onClickHandlerAll = () => {
+    const onClickHandlerAll = () => {
         changeFilter(todoListId, "all")
     }
-    let onClickHandlerActive = () => {
+    const onClickHandlerActive = () => {
         changeFilter(todoListId, "active")
     }
-    let onClickHandlerCompleted = () => {
+    const onClickHandlerCompleted = () => {
         changeFilter(todoListId, "completed")
     }
 
-    let onClickHandlerRemoveTodoList = () => {
+    const onClickHandlerRemoveTodoList = () => {
         removeTodoList(todoListId)
     }
 
-    let callBackForEditableSpan = (tId: string, title: string) => {
+    const callBackForEditableSpan = (tId: string, title: string) => {
         props.updateTask(todoListId, tId, title)
     }
 
-    let callBackForEditableSpanTodo = (title: string) => {
+    const callBackForEditableSpanTodo = (title: string) => {
         props.updateTodoList(todoListId, title)
     }
 
@@ -70,10 +70,10 @@ export const TodoList = ({
             <AddItemForm addItem={callBackHandlerAddTask}/>
             <div>
                 {tasks.map(task => {
-                        let onClickHandler = () => {
+                        const onClickHandler = () => {
                             removeTask(todoListId, task.id)
                         }
-                        let onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             let newIsDoneValue = e.currentTarget.checked
                             changeTaskStatus(todoListId, task.id, newIsDoneValue)
                         };
