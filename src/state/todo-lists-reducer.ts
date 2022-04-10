@@ -1,4 +1,4 @@
-import { v1 } from "uuid";
+import {v1} from "uuid";
 import {TodoListsType} from "../App";
 
 export const todoListsReducer = (state: TodoListsType[], action: GeneralTypeForAC) => {
@@ -9,14 +9,17 @@ export const todoListsReducer = (state: TodoListsType[], action: GeneralTypeForA
         case "ADD-TODOLIST": {
             return [{id: v1(), title: action.payload.title, filter: "all"}, ...state]
         }
+        case "CHANGE-TODOLIST-TITLE": {
+            return state.map(m => m.id === action.payload.todoListId ? {...m, title: action.payload.title} : m)
+        }
         default:
             return state
-
     }
 }
 
 export type GeneralTypeForAC = removeTodoListACType
     | addTodoListACType
+    | changeTitleTodoListACType
 
 export const removeTodoListAC = (todoListId: string) => {
     return {
@@ -39,3 +42,15 @@ export const addTodoListAC = (title: string) => {
 }
 
 export type addTodoListACType = ReturnType<typeof addTodoListAC>
+
+export const changeTitleTodoListAC = (todoListId: string, title: string) => {
+    return {
+        type: 'CHANGE-TODOLIST-TITLE',
+        payload: {
+            todoListId,
+            title
+        }
+    } as const
+}
+
+export type changeTitleTodoListACType = ReturnType<typeof changeTitleTodoListAC>
