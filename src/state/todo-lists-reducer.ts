@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {TodoListsType} from "../App";
+import {FilterValuesType, TodoListsType} from "../App";
 
 export const todoListsReducer = (state: TodoListsType[], action: GeneralTypeForAC) => {
     switch (action.type) {
@@ -12,6 +12,9 @@ export const todoListsReducer = (state: TodoListsType[], action: GeneralTypeForA
         case "CHANGE-TODOLIST-TITLE": {
             return state.map(m => m.id === action.payload.todoListId ? {...m, title: action.payload.title} : m)
         }
+        case "CHANGE-TODOLIST-FILTER": {
+            return state.map(m => m.id === action.payload.todoListId ? {...m, filter: action.payload.filter} : m)
+        }
         default:
             return state
     }
@@ -20,6 +23,7 @@ export const todoListsReducer = (state: TodoListsType[], action: GeneralTypeForA
 export type GeneralTypeForAC = removeTodoListACType
     | addTodoListACType
     | changeTitleTodoListACType
+    | changeFilterTodoListACType
 
 export const removeTodoListAC = (todoListId: string) => {
     return {
@@ -54,3 +58,15 @@ export const changeTitleTodoListAC = (todoListId: string, title: string) => {
 }
 
 export type changeTitleTodoListACType = ReturnType<typeof changeTitleTodoListAC>
+
+export const changeFilterTodoListAC = (todoListId: string, filter: FilterValuesType) => {
+    return {
+        type: 'CHANGE-TODOLIST-FILTER',
+        payload: {
+            todoListId,
+            filter
+        }
+    } as const
+}
+
+export type changeFilterTodoListACType = ReturnType<typeof changeFilterTodoListAC>
