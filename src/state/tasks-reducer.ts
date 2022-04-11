@@ -14,6 +14,14 @@ export const TasksReducer = (state: TasksStateType, action: GeneralTypeForAC) =>
                 ...state,
                 [action.payload.todoListId]: [newTask, ...state[action.payload.todoListId]]
             }
+        case "CHANGE-TASK-STATUS":
+            return {
+                ...state,
+                [action.payload.todoListId]: state[action.payload.todoListId]
+                    .map(m => m.id === action.payload.taskId
+                        ? {...m, isDone: action.payload.isDone}
+                        : m)
+            }
         default:
             return state
     }
@@ -21,6 +29,7 @@ export const TasksReducer = (state: TasksStateType, action: GeneralTypeForAC) =>
 
 export type GeneralTypeForAC = removeTaskACType
     | addTaskACType
+    | changeTaskStatusACType
 
 export const removeTaskAC = (todoListId: string, taskId: string) => {
     return {
@@ -45,3 +54,16 @@ export const addTaskAC = (todoListId: string, title: string) => {
 }
 
 export type addTaskACType = ReturnType<typeof addTaskAC>
+
+export const changeTaskStatusAC = (todoListId: string, taskId: string, isDone: boolean) => {
+    return {
+        type: 'CHANGE-TASK-STATUS',
+        payload: {
+            todoListId,
+            taskId,
+            isDone
+        }
+    } as const
+}
+
+export type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
