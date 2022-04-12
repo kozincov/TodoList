@@ -65,7 +65,7 @@ test('title of specified task should be changed', () => {
 });
 
 test('new array should be added when new todoList is added', () => {
-    
+
     const endState = TasksReducer(startState, addTodoListAC("new todoList"))
 
     const keys = Object.keys(endState);
