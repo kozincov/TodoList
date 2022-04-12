@@ -2,7 +2,9 @@ import {TasksStateType} from "../App";
 import {v1} from "uuid";
 import {addTodoListACType, removeTodoListACType} from "./todo-lists-reducer";
 
-export const TasksReducer = (state: TasksStateType, action: GeneralTypeForAC) => {
+const initialState: TasksStateType = {}
+
+export const TasksReducer = (state: TasksStateType = initialState, action: GeneralTypeForAC) => {
     switch (action.type) {
         case "REMOVE-TASK":
             return {
