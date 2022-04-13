@@ -1,13 +1,14 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import {AddItemForm} from "./components/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType, TodoListsType} from './App';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {addTaskAC} from "./state/tasks-reducer";
 import {changeFilterTodoListAC, changeTitleTodoListAC, removeTodoListAC} from "./state/todo-lists-reducer";
+import {Tasks} from "./Tasks";
 
 export type TodoListType = {
     todoListId: string,
@@ -51,10 +52,6 @@ export const TodoList = ({
         dispatch(removeTodoListAC(todoListId))
     }
 
-    const callBackForEditableSpan = (tId: string, title: string) => {
-        dispatch(changeTaskTitleAC(todoListId, tId, title))
-    }
-
     const callBackForEditableSpanTodo = (title: string) => {
         dispatch(changeTitleTodoListAC(todoListId, title))
     }
@@ -70,26 +67,7 @@ export const TodoList = ({
             </h3>
             <AddItemForm addItem={callBackHandlerAddTask}/>
             <div>
-                {tasks.map(task => {
-                        const onClickHandler = () => {
-                            dispatch(removeTaskAC(todoListId, task.id))
-                        }
-                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            let newIsDoneValue = e.currentTarget.checked
-                            dispatch(changeTaskStatusAC(todoListId, task.id, newIsDoneValue))
-                        };
-                        return (
-                            <div key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <Checkbox color='primary' onChange={onChangeHandler} checked={task.isDone}/>
-                                <EditableSpan value={task.title}
-                                              callBackForEditableSpan={(title) => callBackForEditableSpan(task.id, title)}/>
-                                <IconButton onClick={onClickHandler}>
-                                    <Delete/>
-                                </IconButton>
-                            </div>
-                        )
-                    }
-                )}
+                <Tasks task={tasks} todoListId={todoListId}/>
             </div>
             <div>
                 <Button variant={todoList.filter === 'all' ? 'outlined' : 'text'}
