@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {AddItemForm} from "./components/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
@@ -14,10 +14,10 @@ export type TodoListType = {
     todoListId: string,
 }
 
-export const TodoList = ({
-                             todoListId,
-                             ...props
-                         }: TodoListType) => {
+export const TodoList = React.memo(({
+                                        todoListId,
+                                        ...props
+                                    }: TodoListType) => {
 
     const todoList = useSelector<AppRootStateType, TodoListsType>(state => state.todoLists
         .filter(f => f.id === todoListId)[0])
@@ -34,27 +34,29 @@ export const TodoList = ({
 
     const dispatch = useDispatch();
 
-    const callBackHandlerAddTask = (title: string) => {
+    const callBackHandlerAddTask = useCallback((title: string) => {
         dispatch(addTaskAC(todoListId, title))
-    }
+    }, [dispatch, todoListId])
 
-    const onClickHandlerAll = () => {
+    const onClickHandlerAll = useCallback(() => {
         dispatch(changeFilterTodoListAC(todoListId, "all"))
-    }
-    const onClickHandlerActive = () => {
+    }, [dispatch, todoListId])
+
+    const onClickHandlerActive = useCallback(() => {
         dispatch(changeFilterTodoListAC(todoListId, "active"))
-    }
-    const onClickHandlerCompleted = () => {
+    }, [dispatch, todoListId])
+
+    const onClickHandlerCompleted = useCallback(() => {
         dispatch(changeFilterTodoListAC(todoListId, "completed"))
-    }
+    }, [dispatch, todoListId])
 
-    const onClickHandlerRemoveTodoList = () => {
+    const onClickHandlerRemoveTodoList = useCallback(() => {
         dispatch(removeTodoListAC(todoListId))
-    }
+    }, [dispatch, todoListId])
 
-    const callBackForEditableSpanTodo = (title: string) => {
+    const callBackForEditableSpanTodo = useCallback((title: string) => {
         dispatch(changeTitleTodoListAC(todoListId, title))
-    }
+    }, [dispatch, todoListId])
 
 
     return (
@@ -67,12 +69,18 @@ export const TodoList = ({
             </h3>
             <AddItemForm addItem={callBackHandlerAddTask}/>
             <div>
-                <Tasks task={tasks} todoListId={todoListId}/>
+                {
+                    tasks.map(m => {
+                        return (
+                            <Tasks key={m.id} task={m} todoListId={todoListId}/>
+                        )
+                    })
+                }
             </div>
-            <div>
-                <Button variant={todoList.filter === 'all' ? 'outlined' : 'text'}
-                        onClick={onClickHandlerAll}
-                        color='inherit'>All</Button>
+            < div>
+                < Button variant={todoList.filter === 'all' ? 'outlined' : 'text'}
+                         onClick={onClickHandlerAll}
+                         color='inherit'>All</Button>
                 <Button variant={todoList.filter === 'active' ? 'outlined' : 'text'}
                         onClick={onClickHandlerActive}
                         color='primary'>Active</Button>
@@ -82,4 +90,4 @@ export const TodoList = ({
             </div>
         </div>
     );
-};
+});

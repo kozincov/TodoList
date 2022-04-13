@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./components/EditableSpan";
@@ -7,43 +7,35 @@ import {useDispatch} from "react-redux";
 import {TaskType} from "./App";
 
 export type TasksPropsType = {
-    task: TaskType[]
+    task: TaskType
     todoListId: string
 }
 
-export const Tasks = ({task, todoListId}: TasksPropsType) => {
+export const Tasks = React.memo(({task, todoListId}: TasksPropsType) => {
 
     const dispatch = useDispatch()
 
-    const callBackForEditableSpan = (tId: string, title: string) => {
-        dispatch(changeTaskTitleAC(todoListId, tId, title))
-    }
+    const onTitleChangeHandler = useCallback((title: string) => {
+        dispatch(changeTaskTitleAC(todoListId, task.id, title))
+    }, [dispatch, todoListId, task.id]);
+
+    const onClickHandler = useCallback(() => {
+        dispatch(removeTaskAC(todoListId, task.id))
+    }, [dispatch, todoListId, task.id]);
+
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        let newIsDoneValue = e.currentTarget.checked
+        dispatch(changeTaskStatusAC(todoListId, task.id, newIsDoneValue))
+    }, [dispatch, todoListId, task.id]);
 
     return (
-        <div>
-            {
-                task.map(task => {
-                        const onClickHandler = () => {
-                            dispatch(removeTaskAC(todoListId, task.id))
-                        }
-                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            let newIsDoneValue = e.currentTarget.checked
-                            dispatch(changeTaskStatusAC(todoListId, task.id, newIsDoneValue))
-                        };
-                        return (
-                            <div key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <Checkbox color='primary' onChange={onChangeHandler} checked={task.isDone}/>
-                                <EditableSpan value={task.title}
-                                              callBackForEditableSpan={(title) => callBackForEditableSpan(task.id, title)}/>
-                                <IconButton onClick={onClickHandler}>
-                                    <Delete/>
-                                </IconButton>
-                            </div>
-                        )
-                    }
-                )
-            }
+        <div key={task.id} className={task.isDone ? 'is-done' : ''}>
+            <Checkbox color='primary' onChange={onChangeHandler} checked={task.isDone}/>
+            <EditableSpan value={task.title}
+                          callBackForEditableSpan={onTitleChangeHandler}/>
+            <IconButton onClick={onClickHandler}>
+                <Delete/>
+            </IconButton>
         </div>
     );
-};
-
+});
