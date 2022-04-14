@@ -5,23 +5,24 @@ import {AddBox} from "@material-ui/icons";
 export const AddItemForm = React.memo(({addItem, ...props}: AddItemFormType) => {
 
     let [inputTitle, setInputTitle] = useState('')
-    let [error, setError] = useState<string | null>(null)
+    let [error, setError] = useState<boolean>(false)
 
     const callBackHandler = () => {
         if (inputTitle.trim() !== '') {
             addItem(inputTitle)
             setInputTitle('')
         } else {
-            setError('Title is required')
+            setError(true)
         }
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setError(false)
         setInputTitle(e.currentTarget.value)
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+
         if (e.charCode === 13) {
             callBackHandler();
         }
@@ -32,10 +33,10 @@ export const AddItemForm = React.memo(({addItem, ...props}: AddItemFormType) => 
             <TextField variant={'outlined'}
                        value={inputTitle}
                        onChange={onChangeHandler}
-                       error={!!error}
+                       error={error}
                        onKeyPress={onKeyPressHandler}
                        label={'Title'}
-                       helperText={error}
+                       helperText={error && 'Title is required'}
             />
             <IconButton color="primary" onClick={callBackHandler}>
                 <AddBox/>
