@@ -65,13 +65,13 @@ export const UpdateTodoLists = () => {
 export const GetTask = () => {
     const [state, setState] = useState(null)
 
-    useEffect(()=>{
+    useEffect(() => {
         let todoListId = '76cc0cd7-b4b6-46b9-9fbc-4c7138055051'
         todoListsAPI.getTask(todoListId)
-            .then(res =>{
+            .then(res => {
                 setState(res.data.items)
             })
-    },[])
+    }, [])
 
     return <div>{JSON.stringify(state)}</div>
 }
