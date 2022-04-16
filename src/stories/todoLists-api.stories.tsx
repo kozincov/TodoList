@@ -47,3 +47,15 @@ export const DeleteTodoLists = () => {
 
     return <div>{JSON.stringify(state)}</div>
 }
+
+export const UpdateTodoLists = () => {
+    const [state, setState] = useState<any>(null)
+    useEffect(() => {
+        axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/56abb2e7-fc1d-46e0-ada6-f8cc485f3957`, {title: 'YO'}, settings)
+            .then(res => {
+                setState(res.data)
+            })
+    }, [])
+
+    return <div>{JSON.stringify(state)}</div>
+}
