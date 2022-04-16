@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import axios from "axios";
 import {todoListsAPI} from "../api/todoLists-api";
 
 export default {
@@ -17,7 +16,7 @@ export const GetTodoLists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         todoListsAPI.getTodoLists()
-        .then(res => {
+            .then(res => {
                 setState(res.data)
             })
     }, [])
@@ -29,7 +28,7 @@ export const CreateTodoLists = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
         todoListsAPI.createTodoList('YO-YO')
-        .then(res => {
+            .then(res => {
                 setState(res.data)
             })
     }, [])
@@ -59,6 +58,20 @@ export const UpdateTodoLists = () => {
                 setState(res.data)
             })
     }, [])
+
+    return <div>{JSON.stringify(state)}</div>
+}
+
+export const GetTask = () => {
+    const [state, setState] = useState(null)
+
+    useEffect(()=>{
+        let todoListId = '76cc0cd7-b4b6-46b9-9fbc-4c7138055051'
+        todoListsAPI.getTask(todoListId)
+            .then(res =>{
+                setState(res.data.items)
+            })
+    },[])
 
     return <div>{JSON.stringify(state)}</div>
 }
