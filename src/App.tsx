@@ -4,13 +4,14 @@ import {TodoList} from "./TodoList";
 import {AddItemForm} from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from '@material-ui/icons';
-import {addTodoListAC} from "./state/todo-lists-reducer";
+import {addTodoListAC, TodoListEntityType} from "./state/todo-lists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
+import {TaskType} from './api/todoLists-api';
 
 export const App = () => {
 
-    const todoLists = useSelector<AppRootStateType, TodoListsType[]>(state => state.todoLists)
+    const todoLists = useSelector<AppRootStateType, TodoListEntityType[]>(state => state.todoLists)
     const dispatch = useDispatch();
 
     const addTodoList = useCallback((title: string) => {
@@ -50,20 +51,6 @@ export const App = () => {
             </Container>
         </div>
     );
-}
-
-export  type FilterValuesType = 'all' | 'active' | 'completed'
-
-export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean,
-}
-
-export type TodoListsType = {
-    id: string,
-    title: string,
-    filter: string,
 }
 
 export type TasksStateType = {

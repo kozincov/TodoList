@@ -5,10 +5,15 @@ import {Button, IconButton} from "@material-ui/core";
 import {Delete} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskType, TodoListsType} from './App';
 import {addTaskAC} from "./state/tasks-reducer";
-import {changeFilterTodoListAC, changeTitleTodoListAC, removeTodoListAC} from "./state/todo-lists-reducer";
+import {
+    changeFilterTodoListAC,
+    changeTitleTodoListAC,
+    removeTodoListAC,
+    TodoListEntityType
+} from "./state/todo-lists-reducer";
 import {Tasks} from "./Tasks";
+import {TaskStatuses, TaskType} from "./api/todoLists-api";
 
 export type TodoListType = {
     todoListId: string,
@@ -16,20 +21,19 @@ export type TodoListType = {
 
 export const TodoList = React.memo(({
                                         todoListId,
-                                        ...props
                                     }: TodoListType) => {
 
-    const todoList = useSelector<AppRootStateType, TodoListsType>(state => state.todoLists
+    const todoList = useSelector<AppRootStateType, TodoListEntityType>(state => state.todoLists
         .filter(f => f.id === todoListId)[0])
 
     let tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todoListId])
 
     if (todoList.filter === 'active') {
-        tasks = tasks.filter(f => !f.isDone)
+        tasks = tasks.filter(f => f.status === TaskStatuses.New)
     }
 
     if (todoList.filter === 'completed') {
-        tasks = tasks.filter(f => f.isDone)
+        tasks = tasks.filter(f => f.status === TaskStatuses.Completed)
     }
 
     const dispatch = useDispatch();
