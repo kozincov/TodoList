@@ -14,7 +14,7 @@ export const todoListsReducer = (state: TodoListEntityType[] = initialState, act
     switch (action.type) {
         case "SET-TODOLISTS": {
             return action.payload.todoLists.map(m => {
-                return {...m,filter: 'all'}
+                return {...m, filter: 'all'}
             })
         }
         case "REMOVE-TODOLIST": {
@@ -108,5 +108,12 @@ export const fetchTodoListsTC = () => (dispatch: Dispatch) => {
     todoListsAPI.getTodoLists()
         .then((res) => {
             dispatch(getTodoListsAC(res.data))
+        })
+}
+
+export const deleteTodoListTC = (todoListId: string) => (dispatch: Dispatch) => {
+    todoListsAPI.removeTodoList(todoListId)
+        .then(() => {
+            dispatch(removeTodoListAC(todoListId))
         })
 }

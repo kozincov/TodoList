@@ -9,7 +9,7 @@ import {addTaskAC} from "./state/tasks-reducer";
 import {
     changeFilterTodoListAC,
     changeTitleTodoListAC,
-    removeTodoListAC,
+    deleteTodoListTC,
     TodoListEntityType
 } from "./state/todo-lists-reducer";
 import {Tasks} from "./Tasks";
@@ -55,7 +55,7 @@ export const TodoList = React.memo(({
     }, [dispatch, todoListId])
 
     const onClickHandlerRemoveTodoList = useCallback(() => {
-        dispatch(removeTodoListAC(todoListId))
+        dispatch(deleteTodoListTC(todoListId))
     }, [dispatch, todoListId])
 
     const callBackForEditableSpanTodo = useCallback((title: string) => {
