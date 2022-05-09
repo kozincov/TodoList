@@ -4,7 +4,7 @@ import {TodoList} from "./TodoList";
 import {AddItemForm} from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from '@material-ui/icons';
-import {addTodoListAC, fetchTodoListsTC, TodoListEntityType} from "./state/todo-lists-reducer";
+import {addTodoListTC, fetchTodoListsTC, TodoListEntityType} from "./state/todo-lists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from './api/todoLists-api';
@@ -16,10 +16,10 @@ export const App = () => {
 
     useEffect(() => {
         dispatch(fetchTodoListsTC())
-    },[])
+    }, [])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title))
+        dispatch(addTodoListTC(title))
     }, [dispatch])
 
     return (
