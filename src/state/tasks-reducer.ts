@@ -1,7 +1,8 @@
 import {v1} from "uuid";
 import {addTodoListACType, getTodoListsACType, removeTodoListACType} from "./todo-lists-reducer";
 import {TasksStateType} from "../App";
-import {TaskStatuses, TodoTaskPriority} from "../api/todoLists-api";
+import {TaskStatuses, TaskType, todoListsAPI, TodoTaskPriority} from "../api/todoLists-api";
+import {Dispatch} from "redux";
 
 const initialState: TasksStateType = {}
 
@@ -13,6 +14,12 @@ export const TasksReducer = (state: TasksStateType = initialState, action: Gener
                 stateCopy[f.id] = []
             })
             return stateCopy
+        }
+        case "SET-TASKS": {
+            return {
+                ...state,
+                [action.payload.todoListId]: action.payload.tasks
+            }
         }
         case "REMOVE-TASK":
             return {
@@ -66,6 +73,7 @@ export type GeneralTypeForAC = removeTaskACType
     | addTodoListACType
     | removeTodoListACType
     | getTodoListsACType
+    | setTasksACType
 
 export const removeTaskAC = (todoListId: string, taskId: string) => {
     return {
@@ -116,3 +124,29 @@ export const changeTaskTitleAC = (todoListId: string, taskId: string, title: str
 }
 
 export type changeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
+
+export const setTasksAC = (todoListId: string, tasks: TaskType[]) => {
+    return {
+        type: 'SET-TASKS',
+        payload: {
+            todoListId,
+            tasks
+        }
+    } as const
+}
+
+export type setTasksACType = ReturnType<typeof setTasksAC>
+
+export const fetchTasksTC = (todoListId: string) => (dispatch: Dispatch) => {
+    todoListsAPI.getTasks(todoListId)
+        .then((res) => {
+            dispatch(setTasksAC(todoListId, res.data.items))
+        })
+}
+
+export const addTaskTC = (todoListId: string, title: string) => (dispatch: Dispatch) => {
+    todoListsAPI.createTask(todoListId, title)
+        .then(() => {
+            dispatch(addTaskAC(todoListId, title))
+        })
+}

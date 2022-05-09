@@ -1,11 +1,11 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {AddItemForm} from "./components/AddItemForm";
 import {EditableSpan} from "./components/EditableSpan";
 import {Button, IconButton} from "@material-ui/core";
 import {Delete} from '@material-ui/icons';
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {addTaskAC} from "./state/tasks-reducer";
+import {addTaskTC, fetchTasksTC} from "./state/tasks-reducer";
 import {
     changeFilterTodoListAC,
     changeTitleTodoListAC,
@@ -23,6 +23,10 @@ export const TodoList = React.memo(({
                                         todoListId,
                                     }: TodoListType) => {
 
+    useEffect(() => {
+        dispatch(fetchTasksTC(todoListId))
+    }, [])
+
     const todoList = useSelector<AppRootStateType, TodoListEntityType>(state => state.todoLists
         .filter(f => f.id === todoListId)[0])
 
@@ -39,7 +43,7 @@ export const TodoList = React.memo(({
     const dispatch = useDispatch();
 
     const callBackHandlerAddTask = useCallback((title: string) => {
-        dispatch(addTaskAC(todoListId, title))
+        dispatch(addTaskTC(todoListId, title))
     }, [dispatch, todoListId])
 
     const onClickHandlerAll = useCallback(() => {
