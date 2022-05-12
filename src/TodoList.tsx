@@ -8,9 +8,9 @@ import {AppRootStateType} from "./state/store";
 import {addTaskTC, fetchTasksTC} from "./state/tasks-reducer";
 import {
     changeFilterTodoListAC,
-    changeTitleTodoListAC,
     deleteTodoListTC,
-    TodoListEntityType
+    TodoListEntityType,
+    updateTodoListTitleTC
 } from "./state/todo-lists-reducer";
 import {Tasks} from "./Tasks";
 import {TaskStatuses, TaskType} from "./api/todoLists-api";
@@ -63,7 +63,7 @@ export const TodoList = React.memo(({
     }, [dispatch, todoListId])
 
     const callBackForEditableSpanTodo = useCallback((title: string) => {
-        dispatch(changeTitleTodoListAC(todoListId, title))
+        dispatch(updateTodoListTitleTC(todoListId, title))
     }, [dispatch, todoListId])
 
 
