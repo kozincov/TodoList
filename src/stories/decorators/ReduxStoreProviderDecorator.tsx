@@ -42,6 +42,9 @@ const initialGlobalState: AppRootStateType = {
                 order: 0
             }
         ]
+    },
+    app: {
+        status: 'idle'
     }
 };
 
