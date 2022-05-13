@@ -1,8 +1,8 @@
 import React, {ChangeEvent, useCallback} from 'react';
 import {deleteTaskTC, updateTaskStatusTC, updateTaskTitleTC,} from "./state/tasks-reducer";
-import {Checkbox, IconButton} from "@material-ui/core";
+import {Checkbox, IconButton} from "@mui/material";
 import {EditableSpan} from "./components/EditableSpan";
-import {Delete} from "@material-ui/icons";
+import {Delete} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {TaskStatuses, TaskType} from "./api/todoLists-api";
 

@@ -1,8 +1,8 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {IconButton, TextField} from "@material-ui/core";
-import {AddBox} from "@material-ui/icons";
+import {IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
-export const AddItemForm = React.memo(({addItem, ...props}: AddItemFormType) => {
+export const AddItemForm = React.memo(({addItem}: AddItemFormType) => {
 
     let [inputTitle, setInputTitle] = useState('')
     let [error, setError] = useState<boolean>(false)
