@@ -8,11 +8,15 @@ import {addTodoListTC, fetchTodoListsTC, TodoListEntityType} from "./state/todo-
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {TaskType} from './api/todoLists-api';
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {RequestStatusType} from "./app-reducer";
 
 export const App = () => {
 
     const todoLists = useSelector<AppRootStateType, TodoListEntityType[]>(state => state.todoLists)
     const dispatch = useDispatch();
+
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     useEffect(() => {
         dispatch(fetchTodoListsTC())
@@ -35,6 +39,7 @@ export const App = () => {
                     <Button color={"inherit"}>Login</Button>
                 </Toolbar>
             </AppBar>
+            {status === 'loading' && <LinearProgress color={'secondary'}/>}
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
                     <AddItemForm addItem={addTodoList}/>
